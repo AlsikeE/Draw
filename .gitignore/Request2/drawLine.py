@@ -1,5 +1,5 @@
 import pandas as pd
-
+import os
 import matplotlib.pyplot as plt
 from  pyecharts.charts import  Line,Bar
 import pyecharts.options as opts
@@ -33,22 +33,42 @@ def readCsv (path):
 def _draw_one_line(x,y,marker,mec,mfc,l):
     plt.plot(x, y,mec=mec, mfc=mfc, label=l,linewidth=2.0)
 
-def drawLine(x,ys):
+def drawLine(x,ys, output_dir):
     # plt.plot(x, y1, 'o', 'r', 'w', l = u'test')
-    _draw_one_line(x,ys[0],'o','r','w',u'1-1')
-    _draw_one_line(x, ys[1], 'o', 'r', 'w', u'1-2')
-    _draw_one_line(x, ys[2], 'o', 'r', 'w', u'1-3')
-    _draw_one_line(x, ys[3], 'o', 'r', 'w', u'1-4')
-    _draw_one_line(x, ys[4], 'o', 'r', 'w', u'1-5')
-    _draw_one_line(x, ys[5], 'o', 'r', 'w', u'1-6')
+    _draw_one_line(x,ys[0],'o','r','w',u'S1-1')
+    _draw_one_line(x, ys[1], 'o', 'r', 'w', u'S1-2')
+    _draw_one_line(x, ys[2], 'o', 'r', 'w', u'S1-3')
+    _draw_one_line(x, ys[3], 'o', 'r', 'w', u'S1-4')
+    _draw_one_line(x, ys[4], 'o', 'r', 'w', u'S1-5')
+    _draw_one_line(x, ys[5], 'o', 'r', 'w', u'S1-6')
     plt.plot()
     plt.legend()
-    plt.xlabel('submitTime/seconds')
-    plt.ylabel('responseTime/seconds')
-    plt.savefig('responseTime')
+    plt.xlabel('Request Time(s)')
+    plt.ylabel('Response Time(s)')
+    if (os.path.isdir(output_dir)):
+        pass
+    else:
+        os.makedirs(output_dir)
+
+    plt.savefig( fname= output_dir + '\\ResponseTime.pdf',format='pdf')
     plt.show()
 
+def main_draw_line(dirname,no,output_dir):
+    paths = []
+    i = 1
+    while (i < 7):
+        paths.append(dirname + '\scenario' + str(no) + '-' + str(i) +'\\results\Scenario' + str(no) + '-' + str(i) + '\\workloads\\result_workloads_chain1.csv')
+        i += 1
 
+    x = []
+    ys = []
+    for p in paths:
+        a, y = readCsv(p)
+        x = a
+        ys.append(y)
+    # x,y1 = readCsv(path1)
+    # x2,y2 = readCsv(path2)
+    drawLine(x, ys ,output_dir)  # 折线图
 # def drawLineEcharts(x,y1,y2):
 #     line = Line()
 #     line.add_xaxis(x)
@@ -61,22 +81,23 @@ def drawLine(x,ys):
 #     line.render()
 
 if __name__ == '__main__':
-    paths = [
-        'D:\AlsikeE\code\Test2\Scenario1-1\\results\Scenario1-1\workloads\\[29-13_57_40]result_workloads_chain1.csv',
-        'D:\AlsikeE\code\Test2\Scenario1-2\\results\Scenario1-2\workloads\\[29-14_26_45]result_workloads_chain1.csv',
-        'D:\AlsikeE\code\Test2\Scenario1-3\\results\Scenario1-3\workloads\\[29-14_31_44]result_workloads_chain1.csv',
-        'D:\AlsikeE\code\Test2\Scenario1-4\\results\Scenario1-4\workloads\\[29-14_33_12]result_workloads_chain1.csv',
-        'D:\AlsikeE\code\Test2\Scenario1-5\\results\Scenario1-5\workloads\\[29-14_34_04]result_workloads_chain1.csv',
-        'D:\AlsikeE\code\Test2\Scenario1-6\\results\Scenario1-6\workloads\\[29-14_34_39]result_workloads_chain1.csv'
-    ]
-    path1,path2,path3,path4,path5,path6 = paths
-    x = []
-    ys = []
-    for p in paths:
-        a,y = readCsv(p)
-        x = a
-        ys.append(y)
-    # x,y1 = readCsv(path1)
-    # x2,y2 = readCsv(path2)
-    drawLine(x,ys)
-    # drawLineEcharts(x,y1,y2)
+    # paths = [
+    #     'D:\AlsikeE\code\Test2\Scenario1-1\\results\Scenario1-1\workloads\\[29-13_57_40]result_workloads_chain1.csv',
+    #     'D:\AlsikeE\code\Test2\Scenario1-2\\results\Scenario1-2\workloads\\[29-14_26_45]result_workloads_chain1.csv',
+    #     'D:\AlsikeE\code\Test2\Scenario1-3\\results\Scenario1-3\workloads\\[29-14_31_44]result_workloads_chain1.csv',
+    #     'D:\AlsikeE\code\Test2\Scenario1-4\\results\Scenario1-4\workloads\\[29-14_33_12]result_workloads_chain1.csv',
+    #     'D:\AlsikeE\code\Test2\Scenario1-5\\results\Scenario1-5\workloads\\[29-14_34_04]result_workloads_chain1.csv',
+    #     'D:\AlsikeE\code\Test2\Scenario1-6\\results\Scenario1-6\workloads\\[29-14_34_39]result_workloads_chain1.csv'
+    # ]
+    # path1,path2,path3,path4,path5,path6 = paths
+    # x = []
+    # ys = []
+    # for p in paths:
+    #     a,y = readCsv(p)
+    #     x = a
+    #     ys.append(y)
+    # # x,y1 = readCsv(path1)
+    # # x2,y2 = readCsv(path2)
+    # drawLine(x,ys)#折线图
+    # # drawLineEcharts(x,y1,y2)
+    main_draw_line('D:\AlsikeE\code\Test2\S1',1,'test')

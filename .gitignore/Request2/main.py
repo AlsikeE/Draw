@@ -3,17 +3,15 @@
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 from fileProcess import  *
-
+from anaDir import *
+from drawLine import *
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    path = 'D:\AlsikeE\code\Test2\Scenario1-5\\virtualTopology.json'
-    nodes, links = readfile(path)
-    result1 = ana_nodes(nodes)  #nodes里得到的结果
-    result2 = ana_links(nodes,links)#links里得到的结果
+    dirname = 'D:\AlsikeE\code\Test2\S1' #文件夹的总夹
+    output_dir = 'test'#输出文件夹
+    sno = 1#第几个scenario
+    main_draw_average(dirname, output_dir)#两个平均图
+    main_draw_line(dirname, sno, output_dir)#响应时间折线图
+    main_draw_pics_calculate_from_topo(dirname, sno, output_dir)#两个消耗图
 
-    print(result1)
-    print(result2)
-    # print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
