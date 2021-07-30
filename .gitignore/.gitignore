@@ -1,1 +1,5 @@
 .gitignore
+_pycache_
+.idwa
+S1-pic/
+test/
